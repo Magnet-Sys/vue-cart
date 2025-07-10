@@ -3,49 +3,11 @@
     <div class="row gy-5">
       <div class="col-lg-8">
         <h2 class="mb-4">Productos disponibles</h2>
-        <div class="row">
-          <div v-for="product in products" :key="product.id" class="col-12 col-md-6 col-lg-4 mb-4">
-            <div class="card h-100 shadow-sm">
-              <img :src="getImageUrl(product.image)" class="card-img-top p-3" :alt="product.name" />
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text">Precio: ${{ formatPrice(product.price) }}</p>
-                <b-button variant="primary" class="mt-auto" @click="addToCart(product)">
-                  <i class="bi bi-cart-plus"></i> Agregar al carrito
-                </b-button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProductList :products="products" @add-to-cart="addToCart" />
       </div>
 
       <div class="col-lg-4">
-        <div class="sticky-top" style="top: 20px">
-          <h2 class="mb-4">Productos en el carrito</h2>
-          <div v-if="cart.length === 0" class="alert alert-info">El carrito está vacío.</div>
-          <div v-else>
-            <ul class="list-group mb-3">
-              <li
-                v-for="item in cart"
-                :key="item.id"
-                class="list-group-item d-flex justify-content-between align-items-center"
-              >
-                <div class="d-flex align-items-center">
-                  <img :src="getImageUrl(item.image)" :alt="item.name" class="product-img-sm" />
-                  <div class="ms-3">
-                    <div>{{ item.name }}</div>
-                    <small>Cantidad: {{ item.quantity }}</small>
-                  </div>
-                </div>
-                <b-button variant="danger" size="sm" @click="removeFromCart(item.id)">
-                  <i class="bi bi-trash"></i>
-                  <span class="d-none d-md-inline ms-1">Eliminar del carrito</span>
-                </b-button>
-              </li>
-            </ul>
-            <h3 class="text-end">Total: ${{ formatPrice(totalPrice) }}</h3>
-          </div>
-        </div>
+        <ShoppingCart :cart="cart" :total-price="totalPrice" @remove-from-cart="removeFromCart" />
       </div>
     </div>
 
@@ -61,11 +23,13 @@
 </template>
 
 <script>
-import { BButton } from 'bootstrap-vue-next'
+import ProductList from './components/ProductList.vue'
+import ShoppingCart from './components/ShoppingCart.vue'
 
 export default {
   components: {
-    BButton,
+    ProductList,
+    ShoppingCart,
   },
   data() {
     return {
@@ -86,9 +50,6 @@ export default {
     },
   },
   methods: {
-    getImageUrl(name) {
-      return new URL(`./assets/img/${name}`, import.meta.url).href
-    },
     addToCart(product) {
       const cartItem = this.cart.find((item) => item.id === product.id)
       if (cartItem) {
@@ -107,33 +68,14 @@ export default {
     removeFromCart(productId) {
       this.cart = this.cart.filter((item) => item.id !== productId)
     },
-    formatPrice(value) {
-      return value.toLocaleString('es-CL')
-    },
   },
 }
 </script>
 
-<style scoped>
-.card-img-top {
-  height: 180px;
-  object-fit: contain;
-}
-
-.product-img-sm {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-}
-
-.card {
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+<style>
+#app {
+  border: 2px solid red;
+  display: block;
+  padding: 0 2rem;
 }
 </style>
