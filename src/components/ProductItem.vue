@@ -4,15 +4,20 @@
     <div class="card-body d-flex flex-column">
       <h5 class="card-title">{{ product.name }}</h5>
       <p class="card-text">Precio: ${{ formatPrice(product.price) }}</p>
-      <button class="btn btn-primary mt-auto" @click="$emit('addToCart', product)">
+      <b-button variant="primary" class="mt-auto" @click="$emit('addToCart', product)">
         <i class="bi bi-cart-plus"></i> Agregar al carrito
-      </button>
+      </b-button>
     </div>
   </div>
 </template>
 
 <script>
+import { BButton } from 'bootstrap-vue-next'
+
 export default {
+  components: {
+    BButton,
+  },
   props: {
     product: {
       type: Object,

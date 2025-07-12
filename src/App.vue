@@ -74,7 +74,6 @@ export default {
 
 <style>
 #app {
-  /* border: 2px solid red; */
   display: block;
   padding: 0 2rem;
 }

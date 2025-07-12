@@ -7,15 +7,20 @@
         <small>Cantidad: {{ item.quantity }}</small>
       </div>
     </div>
-    <button class="btn btn-danger btn-sm" @click="$emit('removeFromCart', item.id)">
+    <b-button variant="danger" size="sm" @click="$emit('removeFromCart', item.id)">
       <i class="bi bi-trash"></i>
       <span class="d-none d-md-inline ms-1">Eliminar</span>
-    </button>
+    </b-button>
   </li>
 </template>
 
 <script>
+import { BButton } from 'bootstrap-vue-next'
+
 export default {
+  components: {
+    BButton,
+  },
   props: {
     item: {
       type: Object,
